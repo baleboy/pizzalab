@@ -1,0 +1,43 @@
+* {
+  box-sizing: border-box; }
+
+html, body {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  font-family: 'Helvetica', 'Verdana', sans-serif;
+  font-weight: 400;
+  color: #444;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; }
+
+html {
+  overflow: hidden; }
+
+.container {
+  margin: 2em; }
+.pizzas {
+  background-color: orange;
+  padding: 1em;
+}  
+.pizzas input {
+  font-size:3em; 
+  border-width: 0;
+  background: none; }
+    
+.pizzas h2 {
+  font-size: 1em; }
+
+.ingredient {
+  background-color: yellow;
+  padding: 1em; 
+  margin-top: 1em;}
+  
+.ingredients p {
+  font-size: 2em; 
+  margin: 0}  
+  
+.ingredients h2 {
+  font-size: 0.8em; 
+  margin-top: 0; }
