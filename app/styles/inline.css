@@ -19,12 +19,13 @@ html {
   margin: 2em; }
 .pizzas {
   background-color: orange;
-  padding: 1em;
-}  
+  padding: 1em; }
+    
 .pizzas input {
   font-size:3em; 
   border-width: 0;
-  background: none; }
+  background: none; 
+  width: 100%; }
     
 .pizzas h2 {
   font-size: 1em; }

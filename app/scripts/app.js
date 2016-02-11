@@ -10,10 +10,12 @@
 
   app.updateIngredients = function () {
     
-    if (pizzas == 0)
-      return;
-      
     var pizzas = document.getElementById('pizzas').value;
+    
+    if (!pizzas) 
+      return;
+    
+    localStorage.numberOfPizzas = pizzas;
     
     var flour = Math.round(pizzas * this.weightPerPizza / (1 + this.hydration));
     var water = pizzas * this.weightPerPizza - flour;
@@ -25,14 +27,22 @@
     document.getElementById('salt').innerHTML = salt.toString() + "g";
     document.getElementById('yeast').innerHTML = yeast.toString() + "g";
     
-    localStorage.numberOfPizzas = pizzas;
   }
   
-  document.getElementById('pizzas').addEventListener('input', function(){ app.updateIngredients();});
- 
-  var pizzas = localStorage.numberOfPizzas;
-  document.getElementById('pizzas').value = pizzas ? pizzas : 4;
+  app.restoreData = function () {
+     var pizzas = localStorage.numberOfPizzas;
+     document.getElementById('pizzas').value = pizzas ? pizzas : 4;
+     this.updateIngredients();
+  }
+  
+  document.getElementById('pizzas').addEventListener('input', function(){ app.updateIngredients(); });
+  document.getElementById('pizzas').addEventListener('focusout', 
+    function(){ 
+      if (!document.getElementById('pizzas').value)
+        app.restoreData(); 
+    });
   
   // Init app
-  app.updateIngredients();
+  app.restoreData();
+  
 })();
