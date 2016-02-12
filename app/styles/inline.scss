@@ -14,31 +14,43 @@ html, body {
 
 html {
   overflow: hidden; }
+  
+.header {
+  background-color: blue;
+  text-align: center;
+  color: white;
+  font-size: 3em;
+  padding: .5em;
+}
 
 .container {
   margin: 2em; }
+  
 .pizzas {
   background-color: orange;
-  padding: 1em; }
+  padding: 1em; 
+  
+  input {
+    font-size:3em; 
+    border-width: 0;
+    background: none; 
+    width: 100%; }
     
-.pizzas input {
-  font-size:3em; 
-  border-width: 0;
-  background: none; 
-  width: 100%; }
-    
-.pizzas h2 {
-  font-size: 1em; }
+  h2 {
+    font-size: 1em; }
+  }
 
 .ingredient {
   background-color: yellow;
   padding: 1em; 
   margin-top: 1em;}
   
-.ingredients p {
-  font-size: 2em; 
-  margin: 0}  
-  
-.ingredients h2 {
-  font-size: 0.8em; 
-  margin-top: 0; }
+.ingredients {
+  p {
+    font-size: 2em; 
+    margin: 0}  
+    
+  h2 {
+    font-size: 0.8em; 
+    margin-top: 0; }
+}
