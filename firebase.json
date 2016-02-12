@@ -1,6 +1,6 @@
 {
   "firebase": "pizzalab",
-  "public": "app",
+  "public": "dist",
   "ignore": [
     "firebase.json",
     "**/.*",
