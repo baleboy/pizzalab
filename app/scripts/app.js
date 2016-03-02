@@ -20,43 +20,58 @@
     dough.salt = Math.round(dough.pizzas * dough.weightPerPizza * dough.saltPrc);
     dough.yeast = Math.round(dough.pizzas * dough.weightPerPizza * dough.yeastPrc);
   }
+ 
+  dough.setPizzas = function(pizzas) {
+    dough.pizzas = pizzas;
+    dough.update();
+  }
   
+  dough.setHydration = function(hydration) {
+    dough.hydration = hydration;
+    dough.update();
+  }
+   
   dough.update();
   
   var app = {};
 
-  app.updateIngredients = function () {
+  app.refreshUi = function() {
+    
+    document.getElementById('flour').innerHTML = dough.flour.toString() + "g";
+    document.getElementById('water').innerHTML = dough.water.toString() + "g";
+    document.getElementById('salt').innerHTML = dough.salt.toString() + "g";
+    document.getElementById('yeast').innerHTML = dough.yeast.toString() + "g";  
+    document.getElementById('hydration-value').innerHTML = dough.hydration + "%";
+    document.getElementById('pizzas').value = dough.pizzas ? dough.pizzas : 4;
+    document.getElementById('hydration-input').value = dough.hydration ? dough.hydration : 65;
+  }
+  
+  app.updatePizzas = function() {
     
     var pizzas = document.getElementById('pizzas').value;
     
     if (!pizzas) 
       return;
-    
-    dough.pizzas = pizzas;
+      
+    dough.setPizzas(pizzas);
     localStorage.numberOfPizzas = pizzas;
-    
-    dough.hydration = document.getElementById('hydration-input').value;
-    localStorage.hydration = dough.hydration;
-    
-    dough.update();
-    
-    document.getElementById('flour').innerHTML = dough.flour.toString() + "g";
-    document.getElementById('water').innerHTML = dough.water.toString() + "g";
-    document.getElementById('salt').innerHTML = dough.salt.toString() + "g";
-    document.getElementById('yeast').innerHTML = dough.yeast.toString() + "g";
-    
+    app.refreshUi();
+  }
+  
+  app.updateHydration = function() {
+    var hydration = document.getElementById('hydration-input').value;
+    dough.setHydration(hydration); 
+    localStorage.hydration = hydration;
+    app.refreshUi();
   }
   
   app.restoreData = function () {
-     dough.pizzas = localStorage.numberOfPizzas;
-     document.getElementById('pizzas').value = dough.pizzas ? dough.pizzas : 4;
-     dough.hydration = localStorage.hydration;
-     document.getElementById('hydration-input').value = dough.hydration ? dough.hydration : 65;
-     document.getElementById('hydration-value').innerHTML = dough.hydration + "%";
-     this.updateIngredients();
+     dough.setPizzas(localStorage.numberOfPizzas);
+     dough.setHydration(localStorage.hydration);
+     this.refreshUi();
   }
       
-  document.getElementById('pizzas').addEventListener('input', function(){ app.updateIngredients(); });
+  document.getElementById('pizzas').addEventListener('change', function(){ app.updatePizzas(); });
   
   document.getElementById('pizzas').addEventListener('focusout', 
     function(){ 
@@ -68,8 +83,8 @@
   hi.addEventListener('input', function() {
     document.getElementById('hydration-value').innerHTML = this.value + "%";  
   });
-  hi.addEventListener('input', app.updateIngredients);
-  hi.addEventListener('change', app.updateIngredients);
+  hi.addEventListener('input', app.updateHydration);
+  hi.addEventListener('change', app.updateHydration);
   
   // Init app
   app.restoreData();
