@@ -12,9 +12,6 @@ html, body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
 
-html {
-  overflow: hidden; }
-  
 .header {
   background-color: blue;
   text-align: center;
@@ -38,7 +35,7 @@ html {
     
   h2 {
     font-size: 1em; }
-  }
+}
 
 .ingredient {
   background-color: yellow;
@@ -53,4 +50,15 @@ html {
   h2 {
     font-size: 0.8em; 
     margin-top: 0; }
+}
+
+.settings {
+  margin-left: 2em;  
+}
+.settings-item{
+
+  padding-left: 1em;
+  input {
+    float: left;
+  }
 }
