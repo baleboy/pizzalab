@@ -6,41 +6,41 @@
     yeastPrc: 0.003,
     saltPrc: 0.015,
     weightPerPizza: 225,
-    pizzas: 4,
-    flour: 0,
-    water: 0,
-    salt: 0,
-    yeast: 0
+    pizzas: 4
   };
   
-  dough.update = function() {
-    
-    dough.flour = Math.round(dough.pizzas * dough.weightPerPizza / (1 + dough.hydration/100));
-    dough.water = dough.pizzas * dough.weightPerPizza - dough.flour;
-    dough.salt = Math.round(dough.pizzas * dough.weightPerPizza * dough.saltPrc);
-    dough.yeast = Math.round(dough.pizzas * dough.weightPerPizza * dough.yeastPrc);
+  dough.flour = function() {
+   return Math.round(this.pizzas * this.weightPerPizza / (1 + this.hydration/100)); 
   }
- 
+  
+  dough.water = function() {
+    return this.pizzas * this.weightPerPizza - this.flour();
+  }
+  
+  dough.salt = function() {
+    return Math.round(dough.pizzas * dough.weightPerPizza * dough.saltPrc);
+  }
+  
+  dough.yeast = function() {
+    return Math.round(dough.pizzas * dough.weightPerPizza * dough.yeastPrc);
+  }
+  
   dough.setPizzas = function(pizzas) {
     dough.pizzas = pizzas;
-    dough.update();
   }
   
   dough.setHydration = function(hydration) {
     dough.hydration = hydration;
-    dough.update();
   }
    
-  dough.update();
-  
   var app = {};
 
   app.refreshUi = function() {
     
-    document.getElementById('flour').innerHTML = dough.flour.toString() + "g";
-    document.getElementById('water').innerHTML = dough.water.toString() + "g";
-    document.getElementById('salt').innerHTML = dough.salt.toString() + "g";
-    document.getElementById('yeast').innerHTML = dough.yeast.toString() + "g";  
+    document.getElementById('flour').innerHTML = dough.flour().toString() + "g";
+    document.getElementById('water').innerHTML = dough.water().toString() + "g";
+    document.getElementById('salt').innerHTML = dough.salt().toString() + "g";
+    document.getElementById('yeast').innerHTML = dough.yeast().toString() + "g";  
     document.getElementById('hydration-value').innerHTML = dough.hydration + "%";
     document.getElementById('pizzas').value = dough.pizzas ? dough.pizzas : 4;
     document.getElementById('hydration-input').value = dough.hydration ? dough.hydration : 65;
