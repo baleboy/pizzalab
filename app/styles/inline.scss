@@ -53,12 +53,14 @@ html, body {
 }
 
 .settings {
-  margin-left: 2em;  
+  margin-left: 2em;
 }
 .settings-item{
 
+  display: inline-block;
   padding-left: 1em;
-  input {
-    float: left;
+  
+  p {
+    display: inline-block;
   }
 }
