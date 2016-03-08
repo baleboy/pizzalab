@@ -33,6 +33,10 @@
     dough.hydration = hydration;
   }
    
+  dough.setWeightPerPizza = function(w) {
+    dough.weightPerPizza = w;
+  }
+  
   var app = {};
 
   app.refreshUi = function() {
@@ -44,6 +48,8 @@
     document.getElementById('hydration-value').innerHTML = dough.hydration + "%";
     document.getElementById('pizzas').value = dough.pizzas ? dough.pizzas : 4;
     document.getElementById('hydration-input').value = dough.hydration ? dough.hydration : 65;
+    document.getElementById('wpp-input').value = dough.weightPerPizza ? dough.weightPerPizza : 225;
+    document.getElementById('wpp-value').innerHTML = dough.weightPerPizza + "g";
   }
   
   app.updatePizzas = function() {
@@ -65,9 +71,17 @@
     app.refreshUi();
   }
   
+  app.updateWeightPerPizza = function() {
+    var wpp = document.getElementById('wpp-input').value;
+    dough.setWeightPerPizza(wpp); 
+    localStorage.weightPerPizza = wpp;
+    app.refreshUi();
+  }
+  
   app.restoreData = function () {
      dough.setPizzas(localStorage.numberOfPizzas);
      dough.setHydration(localStorage.hydration);
+     dough.setWeightPerPizza(localStorage.weightPerPizza);
      this.refreshUi();
   }
       
@@ -79,13 +93,19 @@
         app.restoreData(); 
     });
   
-  var hi = document.getElementById('hydration-input');
-  hi.addEventListener('input', function() {
+  var el = document.getElementById('hydration-input');
+  el.addEventListener('input', function() {
     document.getElementById('hydration-value').innerHTML = this.value + "%";  
   });
-  hi.addEventListener('input', app.updateHydration);
-  hi.addEventListener('change', app.updateHydration);
+  el.addEventListener('input', app.updateHydration);
+  el.addEventListener('change', app.updateHydration);
+ 
+  el = document.getElementById('wpp-input');
+  el.addEventListener('input', function() {
+    document.getElementById('wpp-value').innerHTML = this.value + "g";  
+  });
   
+  el.addEventListener('input', app.updateWeightPerPizza);
   // Init app
   app.restoreData();
   
