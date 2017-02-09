@@ -34,7 +34,7 @@
       </div>
     </div>
   </div>
-  <div class="settings">
+  <div class="settings" id="settings-panel" hidden="true">
     <div class="settings-item">
       <h2>Hydration</h2>
       <input id="hydration-input" type="range" min="50" max="100" step="1" />
@@ -55,6 +55,9 @@
       <input id="salt-input" type="range" min="0" max="5" step="0.1" />
       <p id="salt-value">1.5%</p>
     </div>
+  </div>
+  <div class="settings-button">
+    <button id="settings-button">Settings</button>
   </div>
   <script src="scripts/app.js" inline></script>
 </body>

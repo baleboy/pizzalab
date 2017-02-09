@@ -13,29 +13,29 @@ html, body {
   background-color: white;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
-  
+
 .pizzas {
   background-color: blue;
   color: white;
   text-align: center;
   padding: 1em;
-  
+
   input {
-    font-size:3em; 
+    font-size:3em;
     border-width: 0;
-    background: none; 
-    width: 2em; 
+    background: none;
+    width: 2em;
     text-align: center;
     color: white;}
-    
+
   h2 {
     font-size: 1em;}
 }
 
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-  -webkit-appearance: none; 
-  margin: 0; 
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .ingredients {
@@ -49,24 +49,28 @@ input[type=number]::-webkit-outer-spin-button {
   float: left;
   width: 200px;
   text-align: center;
-  
+
   p {
-    font-size: 2em; 
-    margin: auto;}  
+    font-size: 2em;
+    margin: auto;}
 
   h2 {
-    font-size: 0.8em; 
+    font-size: 0.8em;
     margin-top: 0; }
 }
 
 .settings {
-  margin-left: 2em;
+  text-align: center;
+}
+
+.settings-button {
+  text-align: center;
 }
 .settings-item{
 
   display: inline-block;
   padding-left: 1em;
-  
+
   h2 {
     font-size: 1em;
   }
