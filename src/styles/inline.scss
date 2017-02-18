@@ -11,7 +11,7 @@ html, body {
   font-family: 'Open Sans', sans-serif;
   color: #444;
   background-color: white;
-  overflow: hidden;
+  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
 
@@ -61,6 +61,7 @@ html, body {
 .pizzas {
   text-align: center;
   padding: 1em;
+  margin-bottom: 2em;
 
   input {
     font-size:3em;
@@ -80,50 +81,46 @@ input[type=number]::-webkit-outer-spin-button {
   margin: 0;
 }
 
-.ingredients {
-  width: 200px * 2;
-  height: 200px;
+.item-wrapper {
+  max-width: 450px;
   margin: auto;
 }
 
-.ingredient {
-  margin-top: 1.4em;
-  float: left;
-  width: 200px;
-  text-align: center;
+.item-row {
+  width: 100%;
+  display: table;
+  margin-bottom: 2em;
+}
 
+.item {
+  width: 150px;
+  text-align: center;
+  display: table-cell;
+}
+
+.ingredient {
   p {
     font-size: 2em;
-    margin: auto;
+    margin: 0;
   }
 
   h2 {
     font-size: 0.8em;
     margin-top: 0;
-    margin-bottom: 0;
+    margin-bottom: 0.5em;;
     color: #777777;
   }
 }
 
 .settings {
-  width: 200px * 2;
-  margin: auto;
-
-
   h2 {
     font-size: 1em;
     text-align: center;
+    margin-bottom: 2em;
   }
 }
 
 .settings-item{
-
-  margin-top: 1.4em;
-  float: left;
-  width: 200px;
-  text-align: center;
-
-  padding-left: 1em;
 
   h2 {
     font-size: 1em;

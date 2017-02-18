@@ -33,47 +33,55 @@
       <h2>Pizzas</h2>
       <input type="number" id="pizzas">
     </div>
-    <div class="ingredients">
-      <div class="ingredient">
+    <div class="ingredients item-wrapper">
+      <div class="item-row">
+      <div class="ingredient item">
         <h2>Flour</h2>
         <p id="flour"></p>
       </div>
-      <div class="ingredient">
+      <div class="ingredient item">
         <h2>Water</h2>
         <p id="water"></p>
       </div>
-      <div class="ingredient">
+    </div>
+    <div class="item-row">
+      <div class="ingredient item">
         <h2>Salt</h2>
         <p id="salt"></p>
       </div>
-      <div class="ingredient">
+      <div class="ingredient item">
         <h2>Yeast</h2>
         <p id="yeast"></p>
       </div>
     </div>
+    </div>
   </div>
-  <div class="settings" id="settings-panel">
+  <div class="settings item-wrapper" id="settings-panel">
     <h2>Settings</h2>
-    <div class="settings-item">
+    <div class="item-row">
+    <div class="settings-item item">
       <h2>Hydration</h2>
       <input id="hydration-input" type="number">
       <p>%</p>
     </div>
-    <div class="settings-item">
+    <div class="settings-item item">
       <h2>Weight per Pizza</h2>
       <input id="wpp-input" type=number>
       <p>g</p>
     </div>
-    <div class="settings-item">
+  </div>
+  <div class="item-row">
+    <div class="settings-item item">
       <h2>Yeast per Kg</h2>
       <input id="yeast-input" type="number" step="any">
       <p>g</p>
     </div>
-    <div class="settings-item">
+    <div class="settings-item item">
       <h2>Salt per Kg</h2>
       <input id="salt-input" type="number" step="any">
       <p>g</p>
     </div>
+  </div>
   </div>
   <div class="centered-button">
     <button id="save-settings-button">Save Settings</button>
