@@ -80,6 +80,10 @@ button:active {
   display: inline-block;
 }
 
+.login-name {
+  margin-right: 0.7em;
+}
+
 .centered-button {
   text-align: center;
   clear: both;
@@ -163,4 +167,21 @@ input[type=number]::-webkit-outer-spin-button {
     width: 3em;
     text-align: right;
   }
+}
+
+@media (max-width: 768px) {
+  .header {
+    display: block;
+  }
+
+  .vertical-centered {
+    display: block;
+    height: 60px;
+    clear: both;
+  }
+
+  .login-panel {
+    float: left;
+  }
+
 }
