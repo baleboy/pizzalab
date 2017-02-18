@@ -14,6 +14,13 @@ html, body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
 
+  input {
+    border: 0;
+    outline: 0;
+    background: transparent;
+    border-bottom: 1px solid lightGray;
+  }
+
 .header {
   display: table;
   width: 100%;
@@ -56,7 +63,6 @@ html, body {
 
   input {
     font-size:3em;
-    border-width: 0;
     background: none;
     width: 2em;
     text-align: center;
@@ -129,7 +135,7 @@ input[type=number]::-webkit-outer-spin-button {
   }
   input {
     font-size: 1em;
-    width: 50px;
+    width: 2.5em;
     text-align: right;
   }
 }
