@@ -77,8 +77,8 @@ function PizzaLab() {
   this.saveSettingsButton.disabled = true;
   hide(this.logoutButton);
   hide(this.usernameLabel);
-  this.updateIngredients();
   this.updateSettings();
+  this.updateIngredients();
 };
 
 PizzaLab.prototype.updatePizzas = function() {
@@ -166,9 +166,9 @@ PizzaLab.prototype.loadSettings = function(user) {
       if (snapshot.val().dough) {
         this.dough = snapshot.val().dough;
       }
+      this.updateSettings();
+      this.updateIngredients();
     }
-    this.updateIngredients();
-    this.updateSettings();
   }.bind(this));
 }
 
