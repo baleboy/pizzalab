@@ -10,12 +10,21 @@
 </head>
 
 <body>
-  <div class="container">
-    <div class="login-button">
-      <button id="login-button">Login with Google</button>
-      <p id="username" hidden="true">User Name</p>
-      <button id="logout-button" hidden="true">Log out</button>
+  <div class="header">
+    <div class="title">
+      PizzaLab
     </div>
+    <div class="login-panel">
+      <div class="login-name">
+        <p id="username">User Name</p>
+      </div>
+      <div class="login-button">
+        <button id="login-button">Login with Google</button>
+        <button id="logout-button">Log out</button>
+      </div>
+    </div>
+  </div>
+  <div class="container">
     <div class="pizzas">
       <h2>Pizzas</h2>
       <input type="number" id="pizzas">
@@ -39,30 +48,31 @@
       </div>
     </div>
   </div>
-  <div class="settings" id="settings-panel" hidden="true">
+  <div class="settings" id="settings-panel">
+    <h2>Settings</h2>
     <div class="settings-item">
       <h2>Hydration</h2>
-      <input id="hydration-input" type="range" min="50" max="100" step="1" />
-      <p id="hydration-value">50%</p>
+      <input id="hydration-input" type="number">
+      <p>%</p>
     </div>
     <div class="settings-item">
       <h2>Weight per Pizza</h2>
-      <input id="wpp-input" type="range" min="50" max="500" step="5" />
-      <p id="wpp-value">225g</p>
+      <input id="wpp-input" type=number>
+      <p>g</p>
     </div>
     <div class="settings-item">
-      <h2>Yeast Percentage</h2>
-      <input id="yeast-input" type="range" min="0.00" max="0.5" step="0.01" />
-      <p id="yeast-value">0.3%</p>
+      <h2>Yeast per Kg</h2>
+      <input id="yeast-input" type="number" step="any">
+      <p>g</p>
     </div>
     <div class="settings-item">
-      <h2>Salt Percentage</h2>
-      <input id="salt-input" type="range" min="0" max="5" step="0.1" />
-      <p id="salt-value">1.5%</p>
+      <h2>Salt per Kg</h2>
+      <input id="salt-input" type="number" step="any">
+      <p>g</p>
     </div>
   </div>
-  <div class="settings-button">
-    <button id="settings-button">Settings</button>
+  <div class="centered-button">
+    <button id="save-settings-button">Save Settings</button>
   </div>
   <script src="https://www.gstatic.com/firebasejs/3.6.9/firebase.js"></script>
   <script>

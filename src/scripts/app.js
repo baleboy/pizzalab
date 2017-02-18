@@ -25,6 +25,13 @@ Dough.prototype.yeast = function(pizzas) {
   return Math.round(pizzas * this.weightPerPizza * this.yeastPrc / 100);
 };
 
+function hide(element) {
+  element.style.display = 'none';
+}
+
+function show(element) {
+  element.style.display = 'block';
+}
 // Initialize the app
 function PizzaLab() {
 
@@ -45,20 +52,16 @@ function PizzaLab() {
   this.waterLabel = document.getElementById('water');
   this.saltLabel = document.getElementById('salt');
   this.yeastLabel = document.getElementById('yeast');
-  this.hydrationLabel = document.getElementById('hydration-value');
-  this.weightPerPizzaLabel = document.getElementById('wpp-value');
-  this.yeastPrcLabel = document.getElementById('yeast-value');
-  this.saltPrcLabel = document.getElementById('salt-value');
   this.usernameLabel = document.getElementById('username');
 
   // Controls
   this.loginButton = document.getElementById('login-button');
   this.logoutButton = document.getElementById('logout-button');
-  this.settingsButton = document.getElementById('settings-button');
+  this.saveSettingsButton = document.getElementById('save-settings-button');
   this.hydrationInput = document.getElementById('hydration-input');
   this.weightPerPizzaInput = document.getElementById('wpp-input');
-  this.saltPrcInput = document.getElementById('salt-input');
-  this.yeastPrcInput = document.getElementById('yeast-input');
+  this.saltInput = document.getElementById('salt-input');
+  this.yeastInput = document.getElementById('yeast-input');
   this.pizzasInput = document.getElementById('pizzas');
 
   // Events
@@ -66,70 +69,44 @@ function PizzaLab() {
   this.logoutButton.addEventListener('click', this.signOut.bind(this));
   this.pizzasInput.addEventListener('change', this.updatePizzas.bind(this));
   this.hydrationInput.addEventListener('change', this.updateHydration.bind(this));
-  this.hydrationInput.addEventListener('input', this.updateHydration.bind(this));
   this.weightPerPizzaInput.addEventListener('change', this.updateWeightPerPizza.bind(this));
-  this.weightPerPizzaInput.addEventListener('input', this.updateWeightPerPizza.bind(this));
-  this.yeastPrcInput.addEventListener('change', this.updateYeastPrc.bind(this));
-  this.yeastPrcInput.addEventListener('input', this.updateYeastPrc.bind(this));
-  this.saltPrcInput.addEventListener('change', this.updateSaltPrc.bind(this));
-  this.saltPrcInput.addEventListener('input', this.updateSaltPrc.bind(this));
-  this.settingsButton.addEventListener('click', this.toggleSettings.bind(this));
+  this.yeastInput.addEventListener('change', this.updateYeastPrc.bind(this));
+  this.saltInput.addEventListener('change', this.updateSaltPrc.bind(this));
+  this.saveSettingsButton.addEventListener('click', this.saveSettings.bind(this));
 
-  this.refreshUI();
+  this.saveSettingsButton.disabled = true;
+  hide(this.logoutButton);
+  hide(this.usernameLabel);
+  this.updateIngredients();
+  this.updateSettings();
 };
-
-PizzaLab.prototype.toggleSettings = function () {
-  if (this.settingsPanel.hasAttribute('hidden')) {
-    this.settingsPanel.removeAttribute('hidden');
-  } else{
-    this.settingsPanel.setAttribute('hidden', 'true');
-  }
-}
 
 PizzaLab.prototype.updatePizzas = function() {
   this.pizzas = this.pizzasInput.value;
   if (this.userId) {
-    this.database.ref('users/' + this.userId).set( {
-      pizzas: this.pizzas
-    });
+    this.database.ref('users/' + this.userId + '/pizzas').set(this.pizzas);
   }
-  this.refreshUI();
+  this.updateIngredients();
 }
 
 PizzaLab.prototype.updateHydration = function(event) {
-  this.dough.hydration = this.hydrationInput.value;
-  this.hydrationLabel.innerHTML = this.hydrationInput.value + "%";
-  if (this.userId && event.type === 'change') {
-    this.database.ref('users/' + this.userId + '/dough/hydration').set(this.dough.hydration);
-  }
-  this.refreshUI();
+  this.dough.hydration = parseInt(this.hydrationInput.value);
+  this.updateIngredients();
 }
 
 PizzaLab.prototype.updateWeightPerPizza = function(event) {
-  this.dough.weightPerPizza = this.weightPerPizzaInput.value;
-  this.weightPerPizzaLabel.innerHTML = this.weightPerPizzaInput.value;
-  if (this.userId && event.type === 'change') {
-    this.database.ref('users/' + this.userId + '/dough/weightPerPizza').set(this.dough.weightPerPizza);
-  }
-  this.refreshUI();
+  this.dough.weightPerPizza = parseInt(this.weightPerPizzaInput.value);
+  this.updateIngredients();
 }
 
 PizzaLab.prototype.updateSaltPrc = function(event) {
-  this.dough.saltPrc = this.saltPrcInput.value;
-  this.saltPrcLabel.innerHTML = this.saltPrcInput.value + "%";
-  if (this.userId && event.type === 'change') {
-    this.database.ref('users/' + this.userId + '/dough/saltPrc').set(this.dough.saltPrc);
-  }
-  this.refreshUI();
+  this.dough.saltPrc = parseFloat(this.saltInput.value) / 10.0;
+  this.updateIngredients();
 }
 
 PizzaLab.prototype.updateYeastPrc = function(event) {
-  this.dough.yeastPrc = this.yeastPrcInput.value;
-  this.yeastPrcLabel.innerHTML = this.yeastPrcInput.value + "%";
-  if (this.userId && event.type === 'change') {
-    this.database.ref('users/' + this.userId + '/dough/yeastPrc').set(this.dough.yeastPrc);
-  }
-  this.refreshUI();
+  this.dough.yeastPrc = parseFloat(this.yeastInput.value / 10.0);
+  this.updateIngredients();
 }
 
 PizzaLab.prototype.signIn = function() {
@@ -141,64 +118,59 @@ PizzaLab.prototype.signOut = function() {
   this.auth.signOut();
 };
 
+PizzaLab.prototype.saveSettings = function() {
+  this.database.ref('users/' + this.userId + '/pizzas').set(this.pizzas);
+  this.database.ref('users/' + this.userId + '/dough').set(this.dough);
+}
+
 PizzaLab.prototype.onAuthStateChanged = function(user) {
 
   if (user) {
     this.usernameLabel.textContent=user.displayName;
-    this.usernameLabel.removeAttribute('hidden');
-    this.loginButton.setAttribute('hidden', 'true');
-    this.logoutButton.removeAttribute('hidden', 'true');
+    show(this.usernameLabel);
+    hide(this.loginButton);
+    show(this.logoutButton);
     this.userId = user.uid;
-    var app = this;
-    this.database.ref('users/' + user.uid).once('value').then(function(snapshot) {
-      var uiNeedsUpdate = false;
-      if (snapshot.val()) {
-        if (snapshot.val().pizzas) {
-          this.pizzas = snapshot.val().pizzas;
-          console.log('pizzas: ' + this.pizzas);
-          uiNeedsUpdate = true;
-        }
-        if (snapshot.val().dough) {
-          if (snapshot.val().dough.hydration) {
-            this.dough.hydration = snapshot.val().dough.hydration;
-            uiNeedsUpdate = true;
-          }
-          if (snapshot.val().dough.weightPerPizza) {
-            this.dough.weightPerPizza = snapshot.val().dough.weightPerPizza;
-            uiNeedsUpdate = true;
-          }
-          if (snapshot.val().dough.saltPrc) {
-            this.dough.saltPrc = snapshot.val().dough.saltPrc;
-            uiNeedsUpdate = true;
-          }
-          if (snapshot.val().dough.yeastPrc) {
-            this.dough.yeastPrc = snapshot.val().dough.yeastPrc;
-            uiNeedsUpdate = true;
-          }
-        }
-      }
-      if (uiNeedsUpdate)
-        this.refreshUI();
-    }.bind(this));
+    this.saveSettingsButton.disabled = false;
+    this.loadSettings.bind(this)(user);
   } else {
-    this.usernameLabel.setAttribute('hidden', 'true');
-    this.loginButton.removeAttribute('hidden');
-    this.logoutButton.setAttribute('hidden', 'true');
+    hide(this.usernameLabel);
+    show(this.loginButton);
+    hide(this.logoutButton);
     this.userId = null;
+    this.saveSettingsButton.disabled = true;
   }
 };
 
-PizzaLab.prototype.refreshUI = function() {
+PizzaLab.prototype.updateIngredients = function() {
   this.flourLabel.innerHTML = this.dough.flour(this.pizzas).toString() + "g";
   this.waterLabel.innerHTML = this.dough.water(this.pizzas).toString() + "g";
   this.saltLabel.innerHTML = this.dough.salt(this.pizzas).toString() + "g";
   this.yeastLabel.innerHTML = this.dough.yeast(this.pizzas).toString() + "g";
-  this.hydrationLabel.innerHTML = this.dough.hydration + "%";
-  this.saltPrcLabel.innerHTML = this.dough.saltPrc + "%";
-  this.yeastPrcLabel.innerHTML = this.dough.yeastPrc + "%";
-  this.weightPerPizzaLabel.innerHTML = this.dough.weightPerPizza;
-  this.pizzasInput.value = this.pizzas;
 };
+
+PizzaLab.prototype.updateSettings = function() {
+  this.pizzasInput.value = this.pizzas;
+  this.hydrationInput.value = this.dough.hydration;
+  this.weightPerPizzaInput.value = this.dough.weightPerPizza;
+  this.saltInput.value = this.dough.saltPrc * 10.0;
+  this.yeastInput.value = this.dough.yeastPrc * 10.0;
+}
+
+PizzaLab.prototype.loadSettings = function(user) {
+  this.database.ref('users/' + user.uid).once('value').then(function(snapshot) {
+    if (snapshot.val()) {
+      if (snapshot.val().pizzas) {
+        this.pizzas = snapshot.val().pizzas;
+      }
+      if (snapshot.val().dough) {
+        this.dough = snapshot.val().dough;
+      }
+    }
+    this.updateIngredients();
+    this.updateSettings();
+  }.bind(this));
+}
 
 window.onload = function() {
   window.pizzaLab = new PizzaLab();
