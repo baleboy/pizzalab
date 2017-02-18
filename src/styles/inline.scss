@@ -15,29 +15,42 @@ html, body {
   -moz-osx-font-smoothing: grayscale; }
 
 .header {
+  display: table;
+  width: 100%;
   background-color: blue;
   color: white;
+  padding: 1em;
+}
+
+.vertical-centered {
+  display: table-cell;
+  vertical-align: middle;
+  height: 100px;
 }
 
 .login-panel {
-  display: inline-block;
+
+  float: right;
   p {
     margin: 0;
   }
+}
+
+.title {
+  font-size: 3em;
+  float: left;
+}
+
+.login-name, .login-button {
+  display: inline-block;
 }
 
 .centered-button {
   text-align: center;
   clear: both;
 }
-.title {
-  display: inline-block;
-}
-
 
 .pizzas {
-  background-color: blue;
-  color: white;
   text-align: center;
   padding: 1em;
 
@@ -47,7 +60,7 @@ html, body {
     background: none;
     width: 2em;
     text-align: center;
-    color: white;}
+  }
 
   h2 {
     font-size: 1em;
