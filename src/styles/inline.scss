@@ -22,13 +22,9 @@ html, body {
     border-bottom: 1px solid lightGray;
   }
 
-.container {
-    padding-bottom: 2em;
-}
-
 button {
-  font-size: 1em;
-  padding: 12px;;
+  font-size: 0.8em;
+  padding: 10px;;
   border: 0;
   box-shadow: none;
   border-radius: 2px;
@@ -52,7 +48,7 @@ button:active {
 .header {
   display: table;
   width: 100%;
-  background-color: blue;
+  background-color: #0077ff;
   color: white;
   padding: 1em;
 }
@@ -74,6 +70,7 @@ button:active {
 .title {
   font-size: 3em;
   float: left;
+  font-family: 'Lobster', cursive;
 }
 
 .login-name, .login-button {
@@ -82,11 +79,16 @@ button:active {
 
 .login-name {
   margin-right: 0.7em;
+  font-size: 0.8em;
 }
 
 .centered-button {
   text-align: center;
   clear: both;
+}
+
+.container {
+  background-color: white;
 }
 
 .pizzas {
@@ -169,6 +171,14 @@ input[type=number]::-webkit-outer-spin-button {
   }
 }
 
+.footer {
+  text-align: center;
+  margin-top: 2em;
+  padding-top: 1em;
+  padding-bottom: auto;
+  font-size: 0.9em;
+}
+
 @media (max-width: 768px) {
   .header {
     display: block;
@@ -182,6 +192,7 @@ input[type=number]::-webkit-outer-spin-button {
 
   .login-panel {
     float: left;
+    padding-top: 1em;
   }
 
 }
