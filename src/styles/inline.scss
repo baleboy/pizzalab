@@ -13,7 +13,8 @@ html, body {
   background-color: white;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale; }
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-overflow-scrolling: touch; }
 
   input {
     border: 0;
@@ -176,7 +177,7 @@ input[type=number]::-webkit-outer-spin-button {
   text-align: center;
   margin-top: 2em;
   padding-top: 1em;
-  padding-bottom: auto;
+  padding-bottom: 2em;
   font-size: 0.9em;
 }
 
