@@ -9,6 +9,13 @@ function Dough() {
   this.weightPerPizza = 225;
 };
 
+Dough.prototype.fromJSON = function(obj) {
+  this.hydration = obj.hydration;
+  this.yeastPrc =obj.yeastPrc;
+  this.saltPrc = obj.saltPrc;
+  this.weightPerPizza = obj.weightPerPizza;
+}
+
 Dough.prototype.flour = function(pizzas) {
  return Math.round(pizzas * this.weightPerPizza / (1 + this.hydration/100));
 };
@@ -164,10 +171,10 @@ PizzaLab.prototype.loadSettings = function(user) {
         this.pizzas = snapshot.val().pizzas;
       }
       if (snapshot.val().dough) {
-        this.dough = snapshot.val().dough;
+        this.dough.fromJSON(snapshot.val().dough);
       }
-      this.updateSettings();
-      this.updateIngredients();
+      this.updateSettings.bind(this)();
+      this.updateIngredients.bind(this)();
     }
   }.bind(this));
 }
