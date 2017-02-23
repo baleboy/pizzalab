@@ -38,11 +38,11 @@ button:disabled {
   color: darkGray;
 }
 
-button:hover {
+button:hover:enabled {
   background-color: #00BBFF;
 }
 
-button:active {
+button:active:enabled {
   background-color: #00CCFF;
 }
 
