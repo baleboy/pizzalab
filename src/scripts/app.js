@@ -25,11 +25,11 @@ Dough.prototype.water = function(pizzas) {
 };
 
 Dough.prototype.salt = function(pizzas) {
-  return Math.round(pizzas * this.weightPerPizza * this.saltPrc / 100);
+  return Math.round(pizzas * this.weightPerPizza * this.saltPrc / 10)/10;
 };
 
 Dough.prototype.yeast = function(pizzas) {
-  return Math.round(pizzas * this.weightPerPizza * this.yeastPrc / 100);
+  return Math.round(pizzas * this.weightPerPizza * this.yeastPrc / 10)/10;
 };
 
 function hide(element) {
