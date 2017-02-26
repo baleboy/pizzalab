@@ -70,6 +70,7 @@ function PizzaLab() {
   this.saltInput = document.getElementById('salt-input');
   this.yeastInput = document.getElementById('yeast-input');
   this.pizzasInput = document.getElementById('pizzas');
+  this.resetButton = document.getElementById('reset-button');
 
   // Events
   this.loginButton.addEventListener('click', this.signIn.bind(this));
@@ -80,6 +81,7 @@ function PizzaLab() {
   this.yeastInput.addEventListener('change', this.updateYeastPrc.bind(this));
   this.saltInput.addEventListener('change', this.updateSaltPrc.bind(this));
   this.saveSettingsButton.addEventListener('click', this.saveSettings.bind(this));
+  this.resetButton.addEventListener('click', this.reset.bind(this));
 
   this.saveSettingsButton.disabled = true;
   hide(this.logoutButton);
@@ -162,7 +164,7 @@ PizzaLab.prototype.updateSettings = function() {
   this.weightPerPizzaInput.value = this.dough.weightPerPizza;
   this.saltInput.value = this.dough.saltPrc * 10.0;
   this.yeastInput.value = this.dough.yeastPrc * 10.0;
-}
+};
 
 PizzaLab.prototype.loadSettings = function(user) {
   this.database.ref('users/' + user.uid).once('value').then(function(snapshot) {
@@ -177,7 +179,14 @@ PizzaLab.prototype.loadSettings = function(user) {
       this.updateIngredients.bind(this)();
     }
   }.bind(this));
-}
+};
+
+PizzaLab.prototype.reset = function() {
+  this.dough = new Dough();
+  this.updateSettings();
+  this.updateIngredients();
+};
+
 
 window.onload = function() {
   window.pizzaLab = new PizzaLab();
