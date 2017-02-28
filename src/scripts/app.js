@@ -4,9 +4,9 @@
 function Dough() {
 
   this.hydration = 68;
-  this.yeastPrc = 0.3;
+  this.yeastPrc = 0.5;
   this.saltPrc = 1.5;
-  this.weightPerPizza = 225;
+  this.weightPerPizza = 230;
 };
 
 Dough.prototype.fromJSON = function(obj) {
