@@ -17,19 +17,19 @@ Dough.prototype.fromJSON = function(obj) {
 }
 
 Dough.prototype.flour = function(pizzas) {
- return Math.round(pizzas * this.weightPerPizza / (1 + this.hydration/100));
+ return Math.round(pizzas * this.weightPerPizza / (1 + (this.hydration + this.saltPrc + this.yeastPrc)/100));
 };
 
 Dough.prototype.water = function(pizzas) {
-  return pizzas * this.weightPerPizza - this.flour(pizzas);
+  return Math.round(this.flour(pizzas)/100 * this.hydration);
 };
 
 Dough.prototype.salt = function(pizzas) {
-  return Math.round(pizzas * this.weightPerPizza * this.saltPrc / 10)/10;
+  return Math.round((this.flour(pizzas)/100 * this.saltPrc)*10)/10;
 };
 
 Dough.prototype.yeast = function(pizzas) {
-  return Math.round(pizzas * this.weightPerPizza * this.yeastPrc / 10)/10;
+  return Math.round((this.flour(pizzas)/100 * this.yeastPrc)*10)/10;
 };
 
 function hide(element) {
@@ -109,12 +109,12 @@ PizzaLab.prototype.updateWeightPerPizza = function(event) {
 }
 
 PizzaLab.prototype.updateSaltPrc = function(event) {
-  this.dough.saltPrc = parseFloat(this.saltInput.value) / 10.0;
+  this.dough.saltPrc = parseFloat(this.saltInput.value);
   this.updateIngredients();
 }
 
 PizzaLab.prototype.updateYeastPrc = function(event) {
-  this.dough.yeastPrc = parseFloat(this.yeastInput.value / 10.0);
+  this.dough.yeastPrc = parseFloat(this.yeastInput.value);
   this.updateIngredients();
 }
 
@@ -162,8 +162,8 @@ PizzaLab.prototype.updateSettings = function() {
   this.pizzasInput.value = this.pizzas;
   this.hydrationInput.value = this.dough.hydration;
   this.weightPerPizzaInput.value = this.dough.weightPerPizza;
-  this.saltInput.value = this.dough.saltPrc * 10.0;
-  this.yeastInput.value = this.dough.yeastPrc * 10.0;
+  this.saltInput.value = this.dough.saltPrc;
+  this.yeastInput.value = this.dough.yeastPrc;
 };
 
 PizzaLab.prototype.loadSettings = function(user) {
