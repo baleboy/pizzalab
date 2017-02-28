@@ -7,6 +7,9 @@ function Dough() {
   this.yeastPrc = 0.5;
   this.saltPrc = 1.5;
   this.weightPerPizza = 230;
+  this.prefermentPrc = 0;
+  this.prefermentHydration = 100;
+  this.prefermentYeastPrc = 0.2;
 };
 
 Dough.prototype.fromJSON = function(obj) {
@@ -14,6 +17,8 @@ Dough.prototype.fromJSON = function(obj) {
   this.yeastPrc =obj.yeastPrc;
   this.saltPrc = obj.saltPrc;
   this.weightPerPizza = obj.weightPerPizza;
+  this.prefermentPrc = obj.prefermentPrc;
+  this.prefermentHydration = obj.prefermentHydration;
 }
 
 Dough.prototype.flour = function(pizzas) {
@@ -23,6 +28,18 @@ Dough.prototype.flour = function(pizzas) {
 Dough.prototype.water = function(pizzas) {
   return Math.round(this.flour(pizzas)/100 * this.hydration);
 };
+
+Dough.prototype.prefermentFlour = function(pizzas) {
+  return Math.round(this.flour(pizzas) * this.prefermentPrc/100);
+}
+
+Dough.prototype.prefermentWater = function(pizzas) {
+  return Math.round(this.prefermentFlour(pizzas)*this.prefermentHydration/100);
+}
+
+Dough.prototype.prefermentYeast = function(pizzas) {
+  return Math.round((this.prefermentFlour(pizzas)*this.prefermentYeastPrc/100)*10)/10;
+}
 
 Dough.prototype.salt = function(pizzas) {
   return Math.round((this.flour(pizzas)/100 * this.saltPrc)*10)/10;
@@ -59,6 +76,9 @@ function PizzaLab() {
   this.waterLabel = document.getElementById('water');
   this.saltLabel = document.getElementById('salt');
   this.yeastLabel = document.getElementById('yeast');
+  this.prefermentFlourLabel = document.getElementById('preferment-flour');
+  this.prefermentWaterLabel = document.getElementById('preferment-water');
+  this.prefermentYeastLabel = document.getElementById('preferment-yeast');
   this.usernameLabel = document.getElementById('username');
 
   // Controls
@@ -69,8 +89,14 @@ function PizzaLab() {
   this.weightPerPizzaInput = document.getElementById('wpp-input');
   this.saltInput = document.getElementById('salt-input');
   this.yeastInput = document.getElementById('yeast-input');
+  this.prefermentInput = document.getElementById('preferment-input');
+  this.prefermentHydrationInput = document.getElementById('preferment-hydration-input');
+  this.prefermentYeastInput = document.getElementById('preferment-yeast-input');
   this.pizzasInput = document.getElementById('pizzas');
   this.resetButton = document.getElementById('reset-button');
+
+  // Wrappers
+  this.prefermentIngredients = document.getElementById('preferment-ingredients');
 
   // Events
   this.loginButton.addEventListener('click', this.signIn.bind(this));
@@ -80,6 +106,9 @@ function PizzaLab() {
   this.weightPerPizzaInput.addEventListener('change', this.updateWeightPerPizza.bind(this));
   this.yeastInput.addEventListener('change', this.updateYeastPrc.bind(this));
   this.saltInput.addEventListener('change', this.updateSaltPrc.bind(this));
+  this.prefermentInput.addEventListener('change', this.updatePrefermentPrc.bind(this));
+  this.prefermentHydrationInput.addEventListener('change', this.updatePrefermentHydration.bind(this));
+  this.prefermentYeastInput.addEventListener('change', this.updatePrefermentYeast.bind(this));
   this.saveSettingsButton.addEventListener('click', this.saveSettings.bind(this));
   this.resetButton.addEventListener('click', this.reset.bind(this));
 
@@ -118,6 +147,21 @@ PizzaLab.prototype.updateYeastPrc = function(event) {
   this.updateIngredients();
 }
 
+PizzaLab.prototype.updatePrefermentPrc = function(event) {
+  this.dough.prefermentPrc = parseFloat(this.prefermentInput.value);
+  this.updateIngredients();
+}
+
+PizzaLab.prototype.updatePrefermentHydration = function(event) {
+  this.dough.prefermentHydration = parseFloat(this.prefermentHydrationInput.value);
+  this.updateIngredients();
+}
+
+PizzaLab.prototype.updatePrefermentYeast = function(event) {
+  this.dough.prefermentYeastPrc = parseFloat(this.prefermentYeastInput.value);
+  this.updateIngredients();
+}
+
 PizzaLab.prototype.signIn = function() {
   var provider = new firebase.auth.GoogleAuthProvider();
   this.auth.signInWithPopup(provider);
@@ -152,10 +196,27 @@ PizzaLab.prototype.onAuthStateChanged = function(user) {
 };
 
 PizzaLab.prototype.updateIngredients = function() {
-  this.flourLabel.innerHTML = this.dough.flour(this.pizzas).toString() + "g";
-  this.waterLabel.innerHTML = this.dough.water(this.pizzas).toString() + "g";
+  var prefermentFlour = this.dough.prefermentFlour(this.pizzas);
+  var prefermentWater = this.dough.prefermentWater(this.pizzas);
+  var prefermentYeast = this.dough.prefermentYeast(this.pizzas);
+
+  var flour = this.dough.flour(this.pizzas) - prefermentFlour;
+  var water = this.dough.water(this.pizzas) - prefermentWater;
+  var yeast = this.dough.yeast(this.pizzas) - prefermentYeast;
+
+  this.flourLabel.innerHTML = flour.toString() + "g";
+  this.waterLabel.innerHTML = water.toString() + "g";
   this.saltLabel.innerHTML = this.dough.salt(this.pizzas).toString() + "g";
   this.yeastLabel.innerHTML = this.dough.yeast(this.pizzas).toString() + "g";
+  this.prefermentFlourLabel.innerHTML = prefermentFlour.toString() + "g";
+  this.prefermentWaterLabel.innerHTML = prefermentWater.toString() + "g";
+  this.prefermentYeastLabel.innerHTML = prefermentYeast.toString() + "g";
+
+  if (this.dough.prefermentPrc > 0.0) {
+    show(this.prefermentIngredients);
+  } else {
+    hide(this.prefermentIngredients);
+  }
 };
 
 PizzaLab.prototype.updateSettings = function() {
@@ -164,6 +225,9 @@ PizzaLab.prototype.updateSettings = function() {
   this.weightPerPizzaInput.value = this.dough.weightPerPizza;
   this.saltInput.value = this.dough.saltPrc;
   this.yeastInput.value = this.dough.yeastPrc;
+  this.prefermentInput.value = this.dough.prefermentPrc;
+  this.prefermentHydrationInput.value = this.dough.prefermentHydration;
+  this.prefermentYeastInput.value = this.dough.prefermentYeastPrc;
 };
 
 PizzaLab.prototype.loadSettings = function(user) {

@@ -137,6 +137,10 @@ input[type=number]::-webkit-outer-spin-button {
   display: table-cell;
 }
 
+.ingredients {
+   margin-bottom: 2em;
+}
+
 .ingredient {
   p {
     font-size: 2em;
@@ -146,8 +150,9 @@ input[type=number]::-webkit-outer-spin-button {
   h2 {
     font-size: 0.8em;
     margin-top: 0;
-    margin-bottom: 0.5em;;
+    margin-bottom: 0.5em;
     color: #777777;
+
   }
 }
 
