@@ -54,7 +54,7 @@ function hide(element) {
 }
 
 function show(element) {
-  element.style.display = 'block';
+  element.style.display = '';
 }
 // Initialize the app
 function PizzaLab() {

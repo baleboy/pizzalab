@@ -95,6 +95,11 @@ button:active:enabled {
 
 .container {
   background-color: white;
+  text-align: center;
+
+  h2 {
+    font-size: 1em;
+  }
 }
 
 .pizzas {
@@ -121,27 +126,22 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .item-wrapper {
-  max-width: 450px;
+  display: flex;
+  flex-wrap: wrap;
   margin: auto;
-}
-
-.item-row {
-  width: 100%;
-  display: table;
   margin-bottom: 2em;
+  max-width: 800px;
 }
 
 .item {
-  width: 150px;
+  flex-grow: 1;
   text-align: center;
-  display: table-cell;
-}
-
-.ingredients {
-   margin-bottom: 2em;
+  min-width: 180px;
+  padding: 1em;
 }
 
 .ingredient {
+
   p {
     font-size: 2em;
     margin: 0;
@@ -207,4 +207,7 @@ input[type=number]::-webkit-outer-spin-button {
     padding-top: 1em;
   }
 
+  .item-wrapper {
+    max-width: 450px;
+  }
 }
