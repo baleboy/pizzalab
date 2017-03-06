@@ -4,6 +4,8 @@ var htmlmin = require('gulp-htmlmin');
 var inlinesource = require('gulp-inline-source');
 var del = require('del');
 var sass = require('gulp-sass');
+var sourcemaps = require('gulp-sourcemaps');
+var autoprefixer = require('gulp-autoprefixer');
 
 gulp.task('serve', ['sass'], function () {
   browserSync.init({
@@ -18,7 +20,10 @@ gulp.task('serve', ['sass'], function () {
 
 gulp.task('sass', function () {
   return gulp.src('src/styles/*.scss')
+    .pipe(sourcemaps.init())
     .pipe(sass().on('error', sass.logError))
+    .pipe(sourcemaps.write())
+    .pipe(autoprefixer())
     .pipe(gulp.dest('src/styles'))
     .pipe(browserSync.stream());
 });
