@@ -41,6 +41,11 @@ Dough.prototype.prefermentYeast = function(pizzas) {
   return Math.round((this.prefermentFlour(pizzas)*this.prefermentYeastPrc/100)*10)/10;
 }
 
+Dough.prototype.prefermentTotal = function(pizzas) {
+  return Math.round(this.prefermentFlour(pizzas) +
+  this.prefermentWater(pizzas) + this.prefermentYeast(pizzas));
+};
+
 Dough.prototype.salt = function(pizzas) {
   return Math.round((this.flour(pizzas)/100 * this.saltPrc)*10)/10;
 };
@@ -76,6 +81,7 @@ function PizzaLab() {
   this.waterLabel = document.getElementById('water');
   this.saltLabel = document.getElementById('salt');
   this.yeastLabel = document.getElementById('yeast');
+  this.prefermentTotalLabel = document.getElementById('preferment-total');
   this.prefermentFlourLabel = document.getElementById('preferment-flour');
   this.prefermentWaterLabel = document.getElementById('preferment-water');
   this.prefermentYeastLabel = document.getElementById('preferment-yeast');
@@ -199,6 +205,7 @@ PizzaLab.prototype.updateIngredients = function() {
   var prefermentFlour = this.dough.prefermentFlour(this.pizzas);
   var prefermentWater = this.dough.prefermentWater(this.pizzas);
   var prefermentYeast = this.dough.prefermentYeast(this.pizzas);
+  var prefermentTotal = this.dough.prefermentTotal(this.pizzas);
 
   var flour = this.dough.flour(this.pizzas) - prefermentFlour;
   var water = this.dough.water(this.pizzas) - prefermentWater;
@@ -208,6 +215,7 @@ PizzaLab.prototype.updateIngredients = function() {
   this.waterLabel.innerHTML = water.toString() + "g";
   this.saltLabel.innerHTML = this.dough.salt(this.pizzas).toString() + "g";
   this.yeastLabel.innerHTML = this.dough.yeast(this.pizzas).toString() + "g";
+  this.prefermentTotalLabel.innerHTML = prefermentTotal.toString() + "g";
   this.prefermentFlourLabel.innerHTML = prefermentFlour.toString() + "g";
   this.prefermentWaterLabel.innerHTML = prefermentWater.toString() + "g";
   this.prefermentYeastLabel.innerHTML = prefermentYeast.toString() + "g";
