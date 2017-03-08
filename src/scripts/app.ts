@@ -1,58 +1,6 @@
-'use strict';
+import { Dough } from "./dough";
 
-// Class holding dough parameters and amounts
-function Dough() {
-
-  this.hydration = 68;
-  this.yeastPrc = 0.5;
-  this.saltPrc = 1.5;
-  this.weightPerPizza = 230;
-  this.prefermentPrc = 0;
-  this.prefermentHydration = 100;
-  this.prefermentYeastPrc = 0.2;
-};
-
-Dough.prototype.fromJSON = function(obj) {
-  this.hydration = obj.hydration;
-  this.yeastPrc =obj.yeastPrc;
-  this.saltPrc = obj.saltPrc;
-  this.weightPerPizza = obj.weightPerPizza;
-  this.prefermentPrc = obj.prefermentPrc;
-  this.prefermentHydration = obj.prefermentHydration;
-}
-
-Dough.prototype.flour = function(pizzas) {
- return Math.round(pizzas * this.weightPerPizza / (1 + (this.hydration + this.saltPrc + this.yeastPrc)/100));
-};
-
-Dough.prototype.water = function(pizzas) {
-  return Math.round(this.flour(pizzas)/100 * this.hydration);
-};
-
-Dough.prototype.prefermentFlour = function(pizzas) {
-  return Math.round(this.flour(pizzas) * this.prefermentPrc/100);
-}
-
-Dough.prototype.prefermentWater = function(pizzas) {
-  return Math.round(this.prefermentFlour(pizzas)*this.prefermentHydration/100);
-}
-
-Dough.prototype.prefermentYeast = function(pizzas) {
-  return Math.round((this.prefermentFlour(pizzas)*this.prefermentYeastPrc/100)*10)/10;
-}
-
-Dough.prototype.prefermentTotal = function(pizzas) {
-  return Math.round(this.prefermentFlour(pizzas) +
-  this.prefermentWater(pizzas) + this.prefermentYeast(pizzas));
-};
-
-Dough.prototype.salt = function(pizzas) {
-  return Math.round((this.flour(pizzas)/100 * this.saltPrc)*10)/10;
-};
-
-Dough.prototype.yeast = function(pizzas) {
-  return Math.round((this.flour(pizzas)/100 * this.yeastPrc)*10)/10;
-};
+declare var firebase: any;
 
 function hide(element) {
   element.style.display = 'none';
@@ -261,5 +209,5 @@ PizzaLab.prototype.reset = function() {
 
 
 window.onload = function() {
-  window.pizzaLab = new PizzaLab();
+  (window as any).pizzaLab = new PizzaLab();
 };
