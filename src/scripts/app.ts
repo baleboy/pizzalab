@@ -1,6 +1,7 @@
 import { Dough } from "./dough";
 
 declare var firebase: any;
+declare var Vue: any;
 
 function hide(element) {
   element.style.display = 'none';
@@ -9,205 +10,50 @@ function hide(element) {
 function show(element) {
   element.style.display = '';
 }
-// Initialize the app
-function PizzaLab() {
 
-  this.dough = new Dough();
-  this.pizzas = 4;
-  this.userId = null;
-
-  this.auth = firebase.auth();
-  this.auth.onAuthStateChanged(this.onAuthStateChanged.bind(this));
-  this.database = firebase.database();
-  // Create shortcuts for the DOM elements
-
-  // Containers
-  this.settingsPanel = document.getElementById('settings-panel');
-
-  // Labels
-  this.flourLabel = document.getElementById('flour');
-  this.waterLabel = document.getElementById('water');
-  this.saltLabel = document.getElementById('salt');
-  this.yeastLabel = document.getElementById('yeast');
-  this.prefermentTotalLabel = document.getElementById('preferment-total');
-  this.prefermentFlourLabel = document.getElementById('preferment-flour');
-  this.prefermentWaterLabel = document.getElementById('preferment-water');
-  this.prefermentYeastLabel = document.getElementById('preferment-yeast');
-  this.usernameLabel = document.getElementById('username');
-
-  // Controls
-  this.loginButton = document.getElementById('login-button');
-  this.logoutButton = document.getElementById('logout-button');
-  this.saveSettingsButton = document.getElementById('save-settings-button');
-  this.hydrationInput = document.getElementById('hydration-input');
-  this.weightPerPizzaInput = document.getElementById('wpp-input');
-  this.saltInput = document.getElementById('salt-input');
-  this.yeastInput = document.getElementById('yeast-input');
-  this.prefermentInput = document.getElementById('preferment-input');
-  this.prefermentHydrationInput = document.getElementById('preferment-hydration-input');
-  this.prefermentYeastInput = document.getElementById('preferment-yeast-input');
-  this.pizzasInput = document.getElementById('pizzas');
-  this.resetButton = document.getElementById('reset-button');
-
-  // Wrappers
-  this.prefermentIngredients = document.getElementById('preferment-ingredients');
-
-  // Events
-  this.loginButton.addEventListener('click', this.signIn.bind(this));
-  this.logoutButton.addEventListener('click', this.signOut.bind(this));
-  this.pizzasInput.addEventListener('change', this.updatePizzas.bind(this));
-  this.hydrationInput.addEventListener('change', this.updateHydration.bind(this));
-  this.weightPerPizzaInput.addEventListener('change', this.updateWeightPerPizza.bind(this));
-  this.yeastInput.addEventListener('change', this.updateYeastPrc.bind(this));
-  this.saltInput.addEventListener('change', this.updateSaltPrc.bind(this));
-  this.prefermentInput.addEventListener('change', this.updatePrefermentPrc.bind(this));
-  this.prefermentHydrationInput.addEventListener('change', this.updatePrefermentHydration.bind(this));
-  this.prefermentYeastInput.addEventListener('change', this.updatePrefermentYeast.bind(this));
-  this.saveSettingsButton.addEventListener('click', this.saveSettings.bind(this));
-  this.resetButton.addEventListener('click', this.reset.bind(this));
-
-  this.saveSettingsButton.disabled = true;
-  hide(this.logoutButton);
-  hide(this.usernameLabel);
-  this.updateSettings();
-  this.updateIngredients();
-};
-
-PizzaLab.prototype.updatePizzas = function() {
-  this.pizzas = this.pizzasInput.value;
-  if (this.userId) {
-    this.database.ref('users/' + this.userId + '/pizzas').set(this.pizzas);
-  }
-  this.updateIngredients();
-}
-
-PizzaLab.prototype.updateHydration = function(event) {
-  this.dough.hydration = parseInt(this.hydrationInput.value);
-  this.updateIngredients();
-}
-
-PizzaLab.prototype.updateWeightPerPizza = function(event) {
-  this.dough.weightPerPizza = parseInt(this.weightPerPizzaInput.value);
-  this.updateIngredients();
-}
-
-PizzaLab.prototype.updateSaltPrc = function(event) {
-  this.dough.saltPrc = parseFloat(this.saltInput.value);
-  this.updateIngredients();
-}
-
-PizzaLab.prototype.updateYeastPrc = function(event) {
-  this.dough.yeastPrc = parseFloat(this.yeastInput.value);
-  this.updateIngredients();
-}
-
-PizzaLab.prototype.updatePrefermentPrc = function(event) {
-  this.dough.prefermentPrc = parseFloat(this.prefermentInput.value);
-  this.updateIngredients();
-}
-
-PizzaLab.prototype.updatePrefermentHydration = function(event) {
-  this.dough.prefermentHydration = parseFloat(this.prefermentHydrationInput.value);
-  this.updateIngredients();
-}
-
-PizzaLab.prototype.updatePrefermentYeast = function(event) {
-  this.dough.prefermentYeastPrc = parseFloat(this.prefermentYeastInput.value);
-  this.updateIngredients();
-}
-
-PizzaLab.prototype.signIn = function() {
-  var provider = new firebase.auth.GoogleAuthProvider();
-  this.auth.signInWithPopup(provider);
-}
-
-PizzaLab.prototype.signOut = function() {
-  this.auth.signOut();
-};
-
-PizzaLab.prototype.saveSettings = function() {
-  this.database.ref('users/' + this.userId + '/pizzas').set(this.pizzas);
-  this.database.ref('users/' + this.userId + '/dough').set(this.dough);
-}
-
-PizzaLab.prototype.onAuthStateChanged = function(user) {
-
-  if (user) {
-    this.usernameLabel.textContent=user.displayName;
-    show(this.usernameLabel);
-    hide(this.loginButton);
-    show(this.logoutButton);
-    this.userId = user.uid;
-    this.saveSettingsButton.disabled = false;
-    this.loadSettings.bind(this)(user);
-  } else {
-    hide(this.usernameLabel);
-    show(this.loginButton);
-    hide(this.logoutButton);
-    this.userId = null;
-    this.saveSettingsButton.disabled = true;
-  }
-};
-
-PizzaLab.prototype.updateIngredients = function() {
-  var prefermentFlour = this.dough.prefermentFlour(this.pizzas);
-  var prefermentWater = this.dough.prefermentWater(this.pizzas);
-  var prefermentYeast = this.dough.prefermentYeast(this.pizzas);
-  var prefermentTotal = this.dough.prefermentTotal(this.pizzas);
-
-  var flour = this.dough.flour(this.pizzas) - prefermentFlour;
-  var water = this.dough.water(this.pizzas) - prefermentWater;
-  var yeast = this.dough.yeast(this.pizzas) - prefermentYeast;
-
-  this.flourLabel.innerHTML = flour.toString() + "g";
-  this.waterLabel.innerHTML = water.toString() + "g";
-  this.saltLabel.innerHTML = this.dough.salt(this.pizzas).toString() + "g";
-  this.yeastLabel.innerHTML = this.dough.yeast(this.pizzas).toString() + "g";
-  this.prefermentTotalLabel.innerHTML = prefermentTotal.toString() + "g";
-  this.prefermentFlourLabel.innerHTML = prefermentFlour.toString() + "g";
-  this.prefermentWaterLabel.innerHTML = prefermentWater.toString() + "g";
-  this.prefermentYeastLabel.innerHTML = prefermentYeast.toString() + "g";
-
-  if (this.dough.prefermentPrc > 0.0) {
-    show(this.prefermentIngredients);
-  } else {
-    hide(this.prefermentIngredients);
-  }
-};
-
-PizzaLab.prototype.updateSettings = function() {
-  this.pizzasInput.value = this.pizzas;
-  this.hydrationInput.value = this.dough.hydration;
-  this.weightPerPizzaInput.value = this.dough.weightPerPizza;
-  this.saltInput.value = this.dough.saltPrc;
-  this.yeastInput.value = this.dough.yeastPrc;
-  this.prefermentInput.value = this.dough.prefermentPrc;
-  this.prefermentHydrationInput.value = this.dough.prefermentHydration;
-  this.prefermentYeastInput.value = this.dough.prefermentYeastPrc;
-};
-
-PizzaLab.prototype.loadSettings = function(user) {
-  this.database.ref('users/' + user.uid).once('value').then(function(snapshot) {
-    if (snapshot.val()) {
-      if (snapshot.val().pizzas) {
-        this.pizzas = snapshot.val().pizzas;
+var app = new Vue({
+  el: '#app',
+  data: {
+    dough: new Dough(),
+    userId: null,
+    userName: null,
+    ready: false
+  },
+  mounted: function() {
+    firebase.auth().onAuthStateChanged(function(user){
+      if (user) {
+        this.userId = user.uid;
+        this.userName = user.displayName;
+        this.loadSettings();
+      } else {
+        this.userId = null;
+        if (!this.ready) this.ready = true;
       }
-      if (snapshot.val().dough) {
-        this.dough.fromJSON(snapshot.val().dough);
-      }
-      this.updateSettings.bind(this)();
-      this.updateIngredients.bind(this)();
+    }.bind(this));
+  },
+  methods: {
+    signIn: function() {
+      var provider = new firebase.auth.GoogleAuthProvider();
+      firebase.auth().signInWithPopup(provider);
+    },
+    signOut: function() {
+      firebase.auth().signOut();
+    },
+    saveSettings: function() {
+      firebase.database().ref('users/' + this.userId + '/dough').set(this.dough);
+    },
+    loadSettings: function()  {
+      firebase.database().ref('users/' + this.userId).once('value').then(function(snapshot) {
+        if (snapshot.val()) {
+          if (snapshot.val().dough) {
+            this.dough.fromJSON(snapshot.val().dough);
+          }
+        }
+        if (!this.ready) this.ready = true;
+      }.bind(this));
+    },
+    reset: function() {
+      this.dough = new Dough();
     }
-  }.bind(this));
-};
-
-PizzaLab.prototype.reset = function() {
-  this.dough = new Dough();
-  this.updateSettings();
-  this.updateIngredients();
-};
-
-
-window.onload = function() {
-  (window as any).pizzaLab = new PizzaLab();
-};
+  }
+});

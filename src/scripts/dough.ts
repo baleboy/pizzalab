@@ -1,5 +1,6 @@
 export class Dough {
 
+  pizzas: number;
   hydration: number;
   yeastPrc: number;
   saltPrc: number;
@@ -9,6 +10,7 @@ export class Dough {
   prefermentYeastPrc: number;
 
   constructor() {
+    this.pizzas = 4;
     this.hydration = 68;
     this.yeastPrc = 0.5;
     this.saltPrc = 1.5;
@@ -19,6 +21,7 @@ export class Dough {
   }
 
   fromJSON(obj: any) {
+    this.pizzas = obj.pizzas;
     this.hydration = obj.hydration;
     this.yeastPrc =obj.yeastPrc;
     this.saltPrc = obj.saltPrc;
@@ -28,37 +31,37 @@ export class Dough {
     this.prefermentYeastPrc = obj.prefermentYeastPrc;
   }
 
-  flour(pizzas: number) {
-    return Math.round(pizzas * this.weightPerPizza / (1 + (this.hydration + this.saltPrc + this.yeastPrc)/100));
+  flour() {
+    return Math.round(this.pizzas * this.weightPerPizza / (1 + (this.hydration + this.saltPrc + this.yeastPrc)/100));
   }
 
-  water(pizzas: number) {
-    return Math.round(this.flour(pizzas)/100 * this.hydration);
+  water() {
+    return Math.round(this.flour()/100 * this.hydration);
   }
 
-  prefermentFlour(pizzas: number) {
-    return Math.round(this.flour(pizzas) * this.prefermentPrc/100);
+  prefermentFlour() {
+    return Math.round(this.flour() * this.prefermentPrc/100);
   }
 
-  prefermentWater(pizzas: number) {
-    return Math.round(this.prefermentFlour(pizzas)*this.prefermentHydration/100);
+  prefermentWater() {
+    return Math.round(this.prefermentFlour()*this.prefermentHydration/100);
   }
 
-  prefermentYeast(pizzas: number) {
-    return Math.round((this.prefermentFlour(pizzas)*this.prefermentYeastPrc/100)*10)/10;
+  prefermentYeast() {
+    return Math.round((this.prefermentFlour()*this.prefermentYeastPrc/100)*10)/10;
   }
 
-  prefermentTotal(pizzas: number) {
-    return Math.round(this.prefermentFlour(pizzas) +
-    this.prefermentWater(pizzas) + this.prefermentYeast(pizzas));
+  prefermentTotal() {
+    return Math.round(this.prefermentFlour() +
+    this.prefermentWater() + this.prefermentYeast());
   }
 
-  salt(pizzas: number) {
-    return Math.round((this.flour(pizzas)/100 * this.saltPrc)*10)/10;
+  salt() {
+    return Math.round((this.flour()/100 * this.saltPrc)*10)/10;
   }
 
-  yeast(pizzas: number) {
-    return Math.round((this.flour(pizzas)/100 * this.yeastPrc)*10)/10;
+  yeast() {
+    return Math.round((this.flour()/100 * this.yeastPrc)*10)/10;
   }
 
 };
