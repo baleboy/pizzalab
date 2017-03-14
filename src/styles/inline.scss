@@ -140,6 +140,15 @@ input[type=number]::-webkit-outer-spin-button {
   padding: 1em;
 }
 
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  margin: auto;
+  margin-top: 2em;
+  margin-bottom: 2em;
+  padding-bottom: 1.5em;
+  max-width: 750px;
+}
+
 .ingredient {
 
   p {
@@ -209,5 +218,8 @@ input[type=number]::-webkit-outer-spin-button {
 
   .item-wrapper {
     max-width: 400px;
+  }
+  .card {
+    max-width: 450px;
   }
 }
