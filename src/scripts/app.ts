@@ -3,14 +3,6 @@ import { Dough } from "./dough";
 declare var firebase: any;
 declare var Vue: any;
 
-function hide(element) {
-  element.style.display = 'none';
-}
-
-function show(element) {
-  element.style.display = '';
-}
-
 var app = new Vue({
   el: '#app',
   data: {
