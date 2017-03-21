@@ -104,12 +104,12 @@
           <input type="number" step="any" v-model.number.lazy="dough.prefermentPrc">
           <p>%</p>
         </div>
-        <div class="settings-item item">
+        <div class="settings-item item" v-if="dough.prefermentPrc > 0">
           <h2>Hydration</h2>
           <input type="number" step="any" v-model.number.lazy="dough.prefermentHydration">
           <p>%</p>
         </div>
-        <div class="settings-item item">
+        <div class="settings-item item" v-if="dough.prefermentPrc > 0">
           <h2>Yeast</h2>
           <input type="number" step="any" v-model.number.lazy="dough.prefermentYeastPrc">
           <p>%</p>
