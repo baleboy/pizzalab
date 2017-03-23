@@ -40,11 +40,11 @@
       <div class="ingredients item-wrapper">
         <div class="ingredient item">
           <h2>Flour</h2>
-          <p>{{dough.flour()}}g</p>
+          <p>{{dough.flour() - dough.prefermentFlour() }}g</p>
         </div>
         <div class="ingredient item">
           <h2>Water</h2>
-          <p>{{dough.water()}}g</p>
+          <p>{{dough.water() - dough.prefermentWater()}}g</p>
         </div>
         <div class="ingredient item">
           <h2>Salt</h2>
@@ -52,7 +52,7 @@
         </div>
         <div class="ingredient item">
           <h2>Yeast</h2>
-          <p>{{dough.yeast()}}g</p>
+          <p>{{dough.yeast() - dough.prefermentYeast()}}g</p>
         </div>
       </div>
       <div v-if="dough.prefermentPrc > 0" class="ingredients item-wrapper">
