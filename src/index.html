@@ -96,26 +96,24 @@
           <input type="number" step="0.1" v-model.number.lazy="dough.saltPrc">
           <p>%</p>
         </div>
-      </div>
-      <h2>Starter Settings</h2>
-      <div class="settings item-wrapper">
+
         <div class="settings-item item">
-          <h2>Percentage</h2>
+          <h2>Starter percentage</h2>
           <input type="number" step="any" v-model.number.lazy="dough.prefermentPrc">
           <p>%</p>
         </div>
         <div class="settings-item item" v-if="dough.prefermentPrc > 0">
-          <h2>Hydration</h2>
+          <h2>Starter hydration</h2>
           <input type="number" step="any" v-model.number.lazy="dough.prefermentHydration">
           <p>%</p>
         </div>
         <div class="settings-item item" v-if="dough.prefermentPrc > 0">
-          <h2>Yeast</h2>
+          <h2>Starter yeast</h2>
           <input type="number" step="any" v-model.number.lazy="dough.prefermentYeastPrc">
           <p>%</p>
         </div>
       </div>
-    </div>
+
     <div class="inline-buttons">
       <button @click="saveSettings" :disabled="!userId">Save Dough</button>
       <button @click="reset">Reset</button>
